@@ -1,15 +1,3 @@
 {
-  "cart": [
-    {
-      "id": 11,
-      "title": "Es Jeruk",
-      "price": 6000,
-      "image": "https://dcostseafood.id/wp-content/uploads/2021/12/ES-JERUK-murni.jpg",
-      "category": {
-        "id": 1,
-        "name": "Minuman"
-      },
-      "qty": 1
-    }
-  ]
+  "cart": []
 }

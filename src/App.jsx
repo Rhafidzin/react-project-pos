@@ -7,6 +7,8 @@ import TransactionDetailPage from "./components/detail";
 import ProductPage from "./components/product";
 import ProductFormAdd from "./components/product/form/ProductFormAdd";
 import ProductFormEdit from "./components/product/form/ProductFormEdit";
+import ProductDetail from "./components/product/ProductDetail";
+import CategoryPage from "./components/category";
 
 export default function App() {
   return (
@@ -22,6 +24,8 @@ export default function App() {
       <Route path="/product" element={<ProductPage />} />
       <Route path="/product/form/add" element={<ProductFormAdd />} />
       <Route path="/product/form/edit/:id" element={<ProductFormEdit />} />
+      <Route path="/product/detail/:id" element={<ProductDetail />} />
+      <Route path="/category" element={<CategoryPage />} />
     </Routes>
   );
 }

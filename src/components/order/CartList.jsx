@@ -56,7 +56,7 @@ export default function CartList() {
   };
 
   return (
-    <div className="absolute right-0 bg-gray-200 w-1/3 min-h-screen z-10 top-0">
+    <div className="fixed right-0 bg-gray-200 w-1/3 min-h-screen z-10 top-0">
       <h1 className="text-2xl mx-4 mt-8 font-bold">Daftar Pesanan</h1>
       <div className="mt-8 mx-4 grid gap-24">
         {dataCart.length < 1 && (

@@ -25,8 +25,8 @@ export default function OrderProductPage() {
 
   // console.log(categoryState);
   return (
-    <div className="min-h-screen bg-gray-100">
-      <div className="sticky top-[100vh] w-2/3 bg-orange-400 text-white h-16 flex items-center justify-center ">
+    <>
+      <div className="fixed bottom-0 w-2/3 bg-orange-400 text-white h-16 flex items-center justify-center ">
         <ul className="flex items-center">
           <button
             className="border-x border-white px-4 hover:cursor-pointer py-2"
@@ -45,8 +45,10 @@ export default function OrderProductPage() {
           ))}
         </ul>
       </div>
-      <ProductMenuList categoryState={categoryState} />
-      <CartList />
-    </div>
+      <div className="min-h-screen bg-gray-100">
+        <ProductMenuList categoryState={categoryState} />
+        <CartList />
+      </div>
+    </>
   );
 }

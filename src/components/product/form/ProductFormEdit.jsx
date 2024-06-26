@@ -1,7 +1,8 @@
 import axios from "axios";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
+import Swal from "sweetalert2";
 import useSWR from "swr";
 
 export default function ProductFormEdit() {
@@ -18,26 +19,41 @@ export default function ProductFormEdit() {
       .then((response) => response.data.data)
       .catch((e) => console.log(e));
 
-  const { data: dataCategory, isLoading } = useSWR(
+  const { data: dataCategory, isLoading: loadingCategory } = useSWR(
     `http://localhost:8081/pos/api/listproduct/category`,
     fetchCategory
   );
-  const { data: dataProduct } = useSWR(
+  const { data: dataProduct, isLoading: loadingProduct } = useSWR(
     `http://localhost:8081/pos/api/detailproduct/${id}`,
     fetchCategory
   );
 
-  if (isLoading) return <div>Loading</div>;
+  if (loadingCategory) return <div>Loading</div>;
+  if (loadingProduct) return <div>Loading</div>;
 
-  console.log(dataProduct);
   const onClickSubmit = (data) => {
-    console.log(data);
+    console.log("data", data);
     axios
       .put(`http://localhost:8081/pos/api/updateproduct/${id}`, data)
-      .then((res) => console.log(res))
-      .catch((e) => console.log(e));
+      .then((res) => {
+        console.log(res),
+          Swal.fire({
+            icon: "success",
+            title: "Produk berhasil diedit",
+            showConfirmButton: false,
+            timer: 1000,
+          });
+      })
+      .catch((e) => {
+        console.log(e),
+          Swal.fire({
+            icon: "error",
+            title: "Produk gagal diedit",
+            showConfirmButton: false,
+            timer: 1000,
+          });
+      });
   };
-
   return (
     <div className="flex flex-col justify-center items-center my-32 px-64">
       <h1 className="text-2xl font-bold mb-6">Form Edit Produk</h1>
@@ -49,7 +65,7 @@ export default function ProductFormEdit() {
                 Nama Produk
                 <input
                   type="text"
-                  defaultValue={dataProduct?.title}
+                  defaultValue={dataProduct.title}
                   {...register("title")}
                   className="w-full h-12 border-2 border-gray-400 pl-2 text-xl"
                 />
@@ -77,7 +93,7 @@ export default function ProductFormEdit() {
                 URL Gambar
                 <input
                   type="text"
-                  defaultValue={dataProduct?.image}
+                  defaultValue={dataProduct.image}
                   {...register("image")}
                   className="w-full h-12 border-2 border-gray-400 pl-2 text-xl"
                 />
@@ -88,7 +104,7 @@ export default function ProductFormEdit() {
                 Harga Satuan
                 <div className="relative">
                   <input
-                    defaultValue={dataProduct?.price}
+                    defaultValue={dataProduct.price}
                     type="number"
                     {...register("price")}
                     className="border-2 border-gray-400 w-full h-12 text-xl font-medium pl-12"

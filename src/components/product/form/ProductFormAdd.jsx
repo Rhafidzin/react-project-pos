@@ -1,6 +1,7 @@
 import axios from "axios";
 import React from "react";
 import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
 import useSWR from "swr";
 
 export default function ProductFormAdd() {
@@ -28,7 +29,16 @@ export default function ProductFormAdd() {
     console.log(data);
     axios
       .post("http://localhost:8081/pos/api/addproduct", data)
-      .then((res) => console.log(res), reset())
+      .then((res) => {
+        console.log(res),
+          reset(),
+          Swal.fire({
+            icon: "success",
+            title: "Produk berhasil ditambah",
+            showConfirmButton: false,
+            timer: 1000,
+          });
+      })
       .catch((e) => console.log(e));
   };
 
