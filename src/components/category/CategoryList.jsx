@@ -1,5 +1,5 @@
 import axios from "axios";
-import React from "react";
+import React, { useEffect } from "react";
 import useSWR from "swr";
 import CategoryTable from "./CategoryTable";
 import { Link } from "react-router-dom";
@@ -11,16 +11,20 @@ export default function CategoryList() {
       .then((response) => response.data.data)
       .catch((e) => console.log(e));
 
-  const { data: dataCategory, isLoading } = useSWR(
-    `http://localhost:8081/pos/api/listproduct/category`,
-    fetcher
-  );
+  const {
+    data: dataCategory,
+    isLoading,
+    mutate,
+  } = useSWR(`http://localhost:8081/pos/api/listproduct/category`, fetcher);
+
   const { data: dataRelatedProduct, isLoading: relatedLoading } = useSWR(
     `http://localhost:8081/pos/api/listproduct/relatedproduct`,
     fetcher
   );
+
   if (isLoading) return <div>Loading</div>;
   if (relatedLoading) return <div>Loading</div>;
+
   // console.log(dataCategory);
   return (
     <div className="m-16">

@@ -25,7 +25,6 @@ import {
 } from "@/components/ui/pagination";
 import { FormatRupiah } from "@arismun/format-rupiah";
 import { Link } from "react-router-dom";
-import useSWR from "swr";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { CaretUpDown } from "@phosphor-icons/react";
@@ -147,10 +146,9 @@ export default function CategoryTable({ dataCategory, dataRelatedProduct }) {
       });
     } else {
       axios
-        .delete(`http://localhost:8081/pos/api/deleteproduct/${id}`)
+        .delete(`http://localhost:8081/pos/api/deletecategory/${id}`)
         .then((res) => {
           console.log(res);
-          mutate();
         })
         .catch((e) => console.log(e));
     }
