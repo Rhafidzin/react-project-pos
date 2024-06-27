@@ -37,24 +37,31 @@ export default function PaymentDetail() {
       totalPay: parseFloat(data.totalPay),
       transactionsDetail,
     };
-    console.log(payloadPost);
+    // console.log(payloadPost);
     axios
       .post("http://localhost:8081/pos/api/addtransaction", payloadPost)
       .then((res) => {
         console.log(res);
+        Swal.fire({
+          title: "Pembayaran Berhasil!",
+          text: "Uang berhasil dikirim.",
+          icon: "success",
+        });
+        navigate("/");
+        dispatch(dropCart(transactionsDetail));
+        setTimeout(() => dispatch(fetchCart()), 200);
       })
-      .catch((e) => console.log(e));
-    Swal.fire({
-      title: "Pembayaran Berhasil!",
-      text: "Uang berhasil dikirim.",
-      icon: "success",
-    });
-    navigate("/");
-    dispatch(dropCart(transactionsDetail));
-    setTimeout(() => dispatch(fetchCart()), 200);
+      .catch((e) => {
+        console.log(e);
+        Swal.fire({
+          title: "Pembayaran gagal!",
+          text: "Terjadi Kesalahan.",
+          icon: "error",
+        });
+      });
   };
 
-  console.log(change);
+  // console.log(change);
 
   return (
     <div className="mx-4 mt-16">

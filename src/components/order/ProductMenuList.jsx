@@ -8,7 +8,7 @@ export default function ProductMenuList({ categoryState }) {
   const methods = useForm({
     defaultValues: {
       title: "",
-      sort: "",
+      sortBy: "",
     },
   });
 
@@ -38,19 +38,22 @@ export default function ProductMenuList({ categoryState }) {
         <div className="font-normal flex items-center gap-2 text-xl">
           <span>
             <select
-              {...methods.register(`sort`)}
-              className="bg-transparent border border-black w-32"
+              {...methods.register(`sortBy`)}
+              className="bg-transparent border border-black w-40"
             >
-              <option value="">Sort Menu</option>
-              <option value="title">Nama</option>
-              <option value="price">Harga</option>
+              <option value="">Urutkan</option>
+              <option value="title">Nama A-Z</option>
+              <option value="title&sort_order=desc">Nama Z-A</option>
+              <option value="price">Harga terendah</option>
+              <option value="price&sort_order=desc">Harga tertinggi</option>
             </select>
           </span>
           <span>
             <input
               type="text"
+              placeholder="cari menu"
               {...methods.register("title")}
-              className="w-48 bg-slate-100 border border-black"
+              className="w-48 bg-slate-100 border border-black pl-1"
             />
           </span>
         </div>
@@ -60,7 +63,7 @@ export default function ProductMenuList({ categoryState }) {
           <ProductMenu
             title={methods.watch().title}
             category={categoryState}
-            sort={methods.watch().sort}
+            sortBy={methods.watch().sortBy}
           />
         </div>
       </FormProvider>

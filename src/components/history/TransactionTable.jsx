@@ -23,28 +23,31 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { FormatRupiah } from "@arismun/format-rupiah";
 import { Link } from "react-router-dom";
 import useSWR from "swr";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { CaretUpDown } from "@phosphor-icons/react";
 
-export default function CategoryTable({ dataCategory, dataRelatedProduct }) {
-  // if (isLoading) return <div>loading</div>;
-  const related = (id) => {
-    const filter = dataRelatedProduct.filter((r) => r[0] === id);
-    // console.log(filter);
-    if (filter.length === 0) {
-      return 0;
-    } else {
-      return filter[0][1];
-    }
-  };
+export default function TransactionTable({ dataTransaction }) {
+  //   console.log(dataTransaction);
 
-  // console.log(dataRelatedProduct);
-  // console.log(related(1)[1]);
   const columns = [
+    {
+      accessorKey: "transactionDate",
+      header: ({ column }) => (
+        <div className="flex justify-center">
+          <button
+            className="flex items-center gap-1"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            <CaretUpDown weight="bold" />
+            Tanggal Transaksi
+          </button>
+        </div>
+      ),
+      cell: (props) => <p>{props.getValue()}</p>,
+    },
     {
       accessorKey: "id",
       header: ({ column }) => (
@@ -54,14 +57,14 @@ export default function CategoryTable({ dataCategory, dataRelatedProduct }) {
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
             <CaretUpDown weight="bold" />
-            ID Kategori
+            ID Transaksi
           </button>
         </div>
       ),
       cell: (props) => <p>{props.getValue()}</p>,
     },
     {
-      accessorKey: "name",
+      accessorKey: "totalAmount",
       header: ({ column }) => (
         <div className="flex justify-center">
           <button
@@ -69,14 +72,14 @@ export default function CategoryTable({ dataCategory, dataRelatedProduct }) {
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
             <CaretUpDown weight="bold" />
-            Nama Kategori
+            Total Harga
           </button>
         </div>
       ),
       cell: (props) => <p>{props.getValue()}</p>,
     },
     {
-      id: dataRelatedProduct,
+      accessorKey: "totalPay",
       header: ({ column }) => (
         <div className="flex justify-center">
           <button
@@ -84,32 +87,21 @@ export default function CategoryTable({ dataCategory, dataRelatedProduct }) {
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
             <CaretUpDown weight="bold" />
-            Jumlah Produk Terkait
+            Total Bayar
           </button>
         </div>
       ),
-      cell: (props) => <p>{related(props.row.original.id)}</p>,
+      cell: (props) => <p>{props.getValue()}</p>,
     },
     {
       header: "Action",
       cell: (props) => (
         <div className="flex gap-2 justify-center">
           <Link to={`detail/${props.row.original.id}`}>
-            <button className="bg-sky-500 text-white w-28 h-8 rounded-md">
-              Detail
+            <button className="bg-sky-500 text-white w-48 h-8 rounded-md">
+              Detail Transaksi
             </button>
           </Link>
-          <Link to={`form/edit/${props.row.original.id}`}>
-            <button className="bg-sky-500 text-white w-28 h-8 rounded-md">
-              Edit
-            </button>
-          </Link>
-          <button
-            onClick={() => onclickDelete(props.row.original.id)}
-            className="bg-sky-500 text-white w-28 h-8 rounded-md"
-          >
-            Hapus
-          </button>
         </div>
       ),
     },
@@ -121,7 +113,7 @@ export default function CategoryTable({ dataCategory, dataRelatedProduct }) {
     pageSize: 10,
   });
   const table = useReactTable({
-    data: dataCategory,
+    data: dataTransaction,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -134,26 +126,28 @@ export default function CategoryTable({ dataCategory, dataRelatedProduct }) {
     },
   });
 
-  // console.log(table);
+  //   console.log(table.getState().sorting);
   const onclickDelete = (id) => {
-    // console.log(id);
-    const filter = dataRelatedProduct.filter((r) => r[0] === id);
-    // console.log(filter);
-    if (filter.length > 0) {
-      Swal.fire({
-        title: "Produk pernah dibeli",
-        text: "Produk gagal dihapus",
-        icon: "error",
-      });
-    } else {
-      axios
-        .delete(`http://localhost:8081/pos/api/deleteproduct/${id}`)
-        .then((res) => {
-          console.log(res);
-          mutate();
-        })
-        .catch((e) => console.log(e));
-    }
+    console.log(id);
+    // const filter = dataTransactionDetail.filter(
+    //   (data) => data.product.id == id
+    // );
+    // // console.log(filter);
+    // if (filter.length > 0) {
+    //   Swal.fire({
+    //     title: "Produk pernah dibeli",
+    //     text: "Produk gagal dihapus",
+    //     icon: "error",
+    //   });
+    // } else {
+    //   axios
+    //     .delete(`http://localhost:8081/pos/api/deleteproduct/${id}`)
+    //     .then((res) => {
+    //       console.log(res);
+    //       mutate();
+    //     })
+    //     .catch((e) => console.log(e));
+    // }
   };
   return (
     <>
@@ -183,50 +177,48 @@ export default function CategoryTable({ dataCategory, dataRelatedProduct }) {
             </TableRow>
           ))}
         </TableBody>
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <button
-                onClick={() => table.previousPage()}
-                disabled={!table.getCanPreviousPage()}
-                className={
-                  !table.getCanPreviousPage() && "hover:cursor-not-allowed"
-                }
-              >
-                <PaginationPrevious />
-              </button>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">
-                <select
-                  className="bg-transparent "
-                  value={table.getState().pagination.pageSize}
-                  onChange={(e) => {
-                    table.setPageSize(Number(e.target.value));
-                  }}
-                >
-                  {[5, 10, 20, 40, 50].map((pageSize) => (
-                    <option key={pageSize} value={pageSize}>
-                      {pageSize}
-                    </option>
-                  ))}
-                </select>
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <button
-                onClick={() => table.nextPage()}
-                disabled={!table.getCanNextPage()}
-                className={
-                  !table.getCanNextPage() && "hover:cursor-not-allowed"
-                }
-              >
-                <PaginationNext />
-              </button>
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
       </Table>
+      <Pagination>
+        <PaginationContent className="flex justify-between">
+          <PaginationItem>
+            <button
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+              className={
+                !table.getCanPreviousPage() && `hover:cursor-not-allowed`
+              }
+            >
+              <PaginationPrevious />
+            </button>
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink href="#">
+              <select
+                className="bg-transparent "
+                value={table.getState().pagination.pageSize}
+                onChange={(e) => {
+                  table.setPageSize(Number(e.target.value));
+                }}
+              >
+                {[5, 10, 20, 40, 50].map((pageSize) => (
+                  <option key={pageSize} value={pageSize}>
+                    {pageSize}
+                  </option>
+                ))}
+              </select>
+            </PaginationLink>
+          </PaginationItem>
+          <PaginationItem>
+            <button
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+              className={!table.getCanNextPage() && `hover:cursor-not-allowed`}
+            >
+              <PaginationNext />
+            </button>
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
     </>
   );
 }

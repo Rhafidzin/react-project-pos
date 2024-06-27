@@ -1,3 +1,37 @@
 {
-  "cart": []
+  "cart": [
+    {
+      "id": 28,
+      "title": "Es Teh",
+      "price": 8000,
+      "image": "https://dcostseafood.id/wp-content/uploads/2021/12/Es-teh-tawar-manis.jpg",
+      "category": {
+        "id": 1,
+        "name": "Minuman"
+      },
+      "qty": 1
+    },
+    {
+      "id": 27,
+      "title": "Nasi Goreng",
+      "price": 12000,
+      "image": "https://d1vbn70lmn1nqe.cloudfront.net/prod/wp-content/uploads/2023/07/13073811/Praktis-dengan-Bahan-Sederhana-Ini-Resep-Nasi-Goreng-Special-1.jpg.webp",
+      "category": {
+        "id": 2,
+        "name": "Makanan"
+      },
+      "qty": 1
+    },
+    {
+      "id": 12,
+      "title": "Mie Goreng",
+      "price": 8000,
+      "image": "https://cdn0-production-images-kly.akamaized.net/-QqntF9wXQHNZzxkDK9IEs0E_NI=/1200x900/smart/filters:quality(75):strip_icc():format(webp)/kly-media-production/medias/4162951/original/017212600_1663563648-shutterstock_2159757881.jpg",
+      "category": {
+        "id": 2,
+        "name": "Makanan"
+      },
+      "qty": 1
+    }
+  ]
 }

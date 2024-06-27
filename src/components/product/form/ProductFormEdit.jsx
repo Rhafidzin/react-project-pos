@@ -5,13 +5,26 @@ import { useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import useSWR from "swr";
 
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 export default function ProductFormEdit() {
   const { id } = useParams();
+  const schema = yup.object().shape({
+    title: yup.string().required("Isi nama produk!"),
+    image: yup.string().required("Isi url gambar"),
+    price: yup.number().required("Isi harga produk"),
+    category: yup.object({
+      id: yup.string().required("Pilih kategori produk"),
+    }),
+  });
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
 
   const fetchCategory = (url) =>
     axios
@@ -61,59 +74,65 @@ export default function ProductFormEdit() {
         <form onSubmit={handleSubmit(onClickSubmit)}>
           <div className="flex flex-col gap-4 w-full">
             <div>
-              <label className="flex flex-col gap-2">
+              <label className="flex gap-2 font-medium">
                 Nama Produk
-                <input
-                  type="text"
-                  defaultValue={dataProduct.title}
-                  {...register("title")}
-                  className="w-full h-12 border-2 border-gray-400 pl-2 text-xl"
-                />
+                <span className="text-red-500">{errors.title?.message}</span>
               </label>
+              <input
+                type="text"
+                defaultValue={dataProduct.title}
+                {...register("title")}
+                className="w-full h-12 border-2 border-gray-400 pl-2 text-xl"
+              />
             </div>
             <div>
-              <label className="flex flex-col gap-2">
-                Kategori
-                <select
-                  type="text"
-                  {...register("category.id")}
-                  className="w-full h-12 border-2 border-gray-400 pl-2 text-xl"
-                >
-                  <option value=""></option>
-                  {dataCategory.map((c) => (
-                    <option key={c.id} value={c.id}>
-                      {c.name}
-                    </option>
-                  ))}
-                </select>
+              <label className="flex gap-2 font-medium">
+                Kategori{" "}
+                <span className="text-red-500">
+                  {errors.category?.id.message}
+                </span>
               </label>
+              <select
+                type="text"
+                {...register("category.id")}
+                className="w-full h-12 border-2 border-gray-400 pl-2 text-xl"
+              >
+                <option value=""></option>
+                {dataCategory.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.name}
+                  </option>
+                ))}
+              </select>
             </div>
             <div>
-              <label className="flex flex-col gap-2">
-                URL Gambar
-                <input
-                  type="text"
-                  defaultValue={dataProduct.image}
-                  {...register("image")}
-                  className="w-full h-12 border-2 border-gray-400 pl-2 text-xl"
-                />
+              <label className="flex gap-2 font-medium">
+                URL Gambar{" "}
+                <span className="text-red-500">{errors.image?.message}</span>
               </label>
+              <input
+                type="text"
+                defaultValue={dataProduct.image}
+                {...register("image")}
+                className="w-full h-12 border-2 border-gray-400 pl-2 text-xl"
+              />
             </div>
             <div>
-              <label className="flex flex-col gap-2">
+              <label className="flex flex-col font-medium">
                 Harga Satuan
-                <div className="relative">
-                  <input
-                    defaultValue={dataProduct.price}
-                    type="number"
-                    {...register("price")}
-                    className="border-2 border-gray-400 w-full h-12 text-xl font-medium pl-12"
-                  />
-                  <span className="absolute left-2 bottom-3 pr-2 font-bold border-r-2 border-gray-400">
-                    Rp
-                  </span>
-                </div>
+                <span className="text-red-500">{errors.price?.message}</span>
               </label>
+              <div className="relative">
+                <input
+                  defaultValue={dataProduct.price}
+                  type="number"
+                  {...register("price")}
+                  className="border-2 border-gray-400 w-full h-12 text-xl font-medium pl-12"
+                />
+                <span className="absolute left-2 bottom-3 pr-2 font-bold border-r-2 border-gray-400">
+                  Rp
+                </span>
+              </div>
             </div>
           </div>
           <button

@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import useSWR from "swr";
 import { addToCart, fetchCart } from "../../store/reducers/cartSlice";
 
-export default function ProductMenu({ title, category, sort }) {
+export default function ProductMenu({ title, category, sortBy, sortOrder }) {
   const dispatch = useDispatch();
   const fetchProduct = (url) =>
     axios
@@ -14,7 +14,7 @@ export default function ProductMenu({ title, category, sort }) {
       .catch((e) => console.log(e));
 
   const { data: dataProduct } = useSWR(
-    `http://localhost:8081/pos/api/listproduct?title=${title}&category_id=${category}&sort_by=${sort}`,
+    `http://localhost:8081/pos/api/listproduct?title=${title}&category_id=${category}&sort_by=${sortBy}`,
     fetchProduct
   );
 

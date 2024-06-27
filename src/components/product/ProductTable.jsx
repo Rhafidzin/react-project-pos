@@ -23,7 +23,6 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { FormatRupiah } from "@arismun/format-rupiah";
 import { Link } from "react-router-dom";
 import useSWR from "swr";
 import axios from "axios";
@@ -37,7 +36,7 @@ export default function ProductTable({ dataProduct }) {
       .then((response) => response.data.data)
       .catch((e) => console.log(e));
 
-  const { data: dataTransactionDetail } = useSWR(
+  const { data: dataTransactionDetail, mutate } = useSWR(
     `http://localhost:8081/pos/api/listtransaksidetail`,
     fetchProduct
   );
@@ -107,23 +106,22 @@ export default function ProductTable({ dataProduct }) {
       cell: (props) => <p>{props.getValue()}</p>,
     },
     {
-      accessorKey: "id",
       header: "Action",
       cell: (props) => (
         <div className="flex gap-2 justify-center">
-          <Link to={`detail/${props.getValue()}`}>
-            <button className="bg-sky-500 text-white w-28 h-7 rounded-md">
+          <Link to={`detail/${props.row.original.id}`}>
+            <button className="bg-sky-500 text-white w-28 h-8 rounded-md">
               Detail
             </button>
           </Link>
-          <Link to={`form/edit/${props.getValue()}`}>
-            <button className="bg-sky-500 text-white w-28 h-7 rounded-md">
+          <Link to={`form/edit/${props.row.original.id}`}>
+            <button className="bg-sky-500 text-white w-28 h-8 rounded-md">
               Edit
             </button>
           </Link>
           <button
-            onClick={() => onclickDelete(props.getValue())}
-            className="bg-sky-500 text-white w-28 h-7 rounded-md"
+            onClick={() => onclickDelete(props.row.original.id)}
+            className="bg-sky-500 text-white w-28 h-8 rounded-md"
           >
             Hapus
           </button>
@@ -165,13 +163,29 @@ export default function ProductTable({ dataProduct }) {
         icon: "error",
       });
     } else {
-      axios
-        .delete(`http://localhost:8081/pos/api/deleteproduct/${id}`)
-        .then((res) => {
-          console.log(res);
-          mutate();
-        })
-        .catch((e) => console.log(e));
+      Swal.fire({
+        title: "Hapus produk?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios
+            .delete(`http://localhost:8081/pos/api/deleteproduct/${id}`)
+            .then((res) => {
+              console.log(res);
+              mutate();
+            })
+            .catch((e) => console.log(e));
+          Swal.fire({
+            title: "Deleted!",
+            text: "Produk berhasil dihapus.",
+            icon: "success",
+          });
+        }
+      });
     }
   };
   return (
@@ -202,50 +216,48 @@ export default function ProductTable({ dataProduct }) {
             </TableRow>
           ))}
         </TableBody>
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <button
-                onClick={() => table.previousPage()}
-                disabled={!table.getCanPreviousPage()}
-                className={
-                  !table.getCanPreviousPage() && "hover:cursor-not-allowed"
-                }
-              >
-                <PaginationPrevious />
-              </button>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">
-                <select
-                  className="bg-transparent "
-                  value={table.getState().pagination.pageSize}
-                  onChange={(e) => {
-                    table.setPageSize(Number(e.target.value));
-                  }}
-                >
-                  {[5, 10, 20, 40, 50].map((pageSize) => (
-                    <option key={pageSize} value={pageSize}>
-                      {pageSize}
-                    </option>
-                  ))}
-                </select>
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <button
-                onClick={() => table.nextPage()}
-                disabled={!table.getCanNextPage()}
-                className={
-                  !table.getCanNextPage() && "hover:cursor-not-allowed"
-                }
-              >
-                <PaginationNext />
-              </button>
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
       </Table>
+      <Pagination>
+        <PaginationContent className="flex justify-between">
+          <PaginationItem>
+            <button
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+              className={
+                !table.getCanPreviousPage() && "hover:cursor-not-allowed"
+              }
+            >
+              <PaginationPrevious />
+            </button>
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink href="#">
+              <select
+                className="bg-transparent "
+                value={table.getState().pagination.pageSize}
+                onChange={(e) => {
+                  table.setPageSize(Number(e.target.value));
+                }}
+              >
+                {[5, 10, 20, 40, 50].map((pageSize) => (
+                  <option key={pageSize} value={pageSize}>
+                    {pageSize}
+                  </option>
+                ))}
+              </select>
+            </PaginationLink>
+          </PaginationItem>
+          <PaginationItem>
+            <button
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+              className={!table.getCanNextPage() && "hover:cursor-not-allowed"}
+            >
+              <PaginationNext />
+            </button>
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
     </>
   );
 }

@@ -11,6 +11,7 @@ import useSWR from "swr";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { FormatRupiah } from "@arismun/format-rupiah";
+import { ArrowLeft } from "lucide-react";
 
 export default function TransactionDetail() {
   const { id } = useParams();
@@ -35,7 +36,17 @@ export default function TransactionDetail() {
   const dataTransaction = filteredData[0].transaction;
   return (
     <div className="m-16">
-      <h1 className="font-bold text-2xl">Detail Transaksi</h1>
+      <h1 className="font-bold text-2xl flex justify-between">
+        Daftar Produk{" "}
+        <span>
+          <Link to="/transaction">
+            <button className="flex justify-center items-center gap-1 font-medium text-lg bg-green-500 text-white w-48 h-9 rounded-md">
+              <ArrowLeft />
+              Kembali
+            </button>
+          </Link>
+        </span>
+      </h1>
       <div className="border-t-2 border-black mt-8 py-12">
         <table className=" text-lg flex flex-col gap-4">
           <tbody>

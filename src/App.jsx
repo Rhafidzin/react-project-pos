@@ -9,6 +9,9 @@ import ProductFormAdd from "./components/product/form/ProductFormAdd";
 import ProductFormEdit from "./components/product/form/ProductFormEdit";
 import ProductDetail from "./components/product/ProductDetail";
 import CategoryPage from "./components/category";
+import CategoryFormAdd from "./components/category/form/CategoryFormAdd";
+import CategoryFormEdit from "./components/category/form/CategoryFormEdit";
+import CategoryDetail from "./components/category/CategoryDetail";
 
 export default function App() {
   return (
@@ -16,9 +19,9 @@ export default function App() {
       <Route path="/" element={<Navigate to="/order/product" />} />
       <Route path="/order/product" element={<OrderProductPage />} />
       <Route path="/payment" element={<PaymentPage />} />
-      <Route path="/history" element={<TransactionHistoryPage />} />
+      <Route path="/transaction" element={<TransactionHistoryPage />} />
       <Route
-        path="/detail/transaction/:id"
+        path="/transaction/detail/:id"
         element={<TransactionDetailPage />}
       />
       <Route path="/product" element={<ProductPage />} />
@@ -26,6 +29,9 @@ export default function App() {
       <Route path="/product/form/edit/:id" element={<ProductFormEdit />} />
       <Route path="/product/detail/:id" element={<ProductDetail />} />
       <Route path="/category" element={<CategoryPage />} />
+      <Route path="/category/form/add" element={<CategoryFormAdd />} />
+      <Route path="/category/form/edit/:id" element={<CategoryFormEdit />} />
+      <Route path="/category/detail/:id" element={<CategoryDetail />} />
     </Routes>
   );
 }
