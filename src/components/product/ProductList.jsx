@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useSWR from "swr";
 import { Link } from "react-router-dom";
 
@@ -12,14 +12,19 @@ export default function ProductList() {
       .then((response) => response.data.data)
       .catch((e) => console.log(e));
 
-  const { data: dataProduct, isLoading } = useSWR(
+  const {
+    data: dataProduct,
+    isLoading,
+    mutate,
+  } = useSWR(
     `http://localhost:8081/pos/api/listproduct?title=&category_id=`,
     fetchProduct
   );
 
   if (isLoading) return <div>Loading</div>;
+
   return (
-    <div className="m-16">
+    <div className="p-16">
       <h1 className="font-bold text-2xl flex justify-between">
         Daftar Produk{" "}
         <span>
@@ -31,7 +36,7 @@ export default function ProductList() {
         </span>
       </h1>
       <div className="mt-8">
-        <ProductTable dataProduct={dataProduct} />
+        <ProductTable dataProduct={dataProduct} mutate={mutate} />
       </div>
     </div>
   );

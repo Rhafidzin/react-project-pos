@@ -3,6 +3,7 @@ import ProductMenuList from "./ProductMenuList";
 import axios from "axios";
 import useSWR from "swr";
 import CartList from "./CartList";
+import Navbar from "../layout/Navbar";
 
 export default function OrderProductPage() {
   const [categoryState, setCategoryState] = useState("");
@@ -26,6 +27,7 @@ export default function OrderProductPage() {
   // console.log(categoryState);
   return (
     <>
+      <Navbar />
       <div className="fixed bottom-0 w-2/3 bg-orange-400 text-white h-16 flex items-center justify-center ">
         <ul className="flex items-center text-xl">
           <button

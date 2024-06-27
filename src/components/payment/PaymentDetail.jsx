@@ -64,7 +64,7 @@ export default function PaymentDetail() {
   // console.log(change);
 
   return (
-    <div className="mx-4 mt-16">
+    <div className="mx-4 pt-16">
       <div className="grid grid-cols-3 gap-2">
         <div className="col-span-2 flex flex-col border-r-4 min-h-screen">
           <h1 className="text-2xl font-bold mb-6">Rincian Pesanan</h1>

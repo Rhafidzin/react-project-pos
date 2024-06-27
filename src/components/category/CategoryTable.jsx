@@ -29,7 +29,11 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { CaretUpDown } from "@phosphor-icons/react";
 
-export default function CategoryTable({ dataCategory, dataRelatedProduct }) {
+export default function CategoryTable({
+  dataCategory,
+  dataRelatedProduct,
+  mutate,
+}) {
   // if (isLoading) return <div>loading</div>;
   const related = (id) => {
     const filter = dataRelatedProduct.filter((r) => r[0] === id);
@@ -140,17 +144,34 @@ export default function CategoryTable({ dataCategory, dataRelatedProduct }) {
     // console.log(filter);
     if (filter.length > 0) {
       Swal.fire({
-        title: "Produk pernah dibeli",
-        text: "Produk gagal dihapus",
+        title: "Kategori terdapat menu",
+        text: "Kategori gagal dihapus",
         icon: "error",
       });
     } else {
-      axios
-        .delete(`http://localhost:8081/pos/api/deletecategory/${id}`)
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((e) => console.log(e));
+      Swal.fire({
+        title: "Hapus produk?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios
+            .delete(`http://localhost:8081/pos/api/deletecategory/${id}`)
+            .then((res) => {
+              console.log(res);
+              mutate();
+            })
+            .catch((e) => console.log(e));
+          Swal.fire({
+            title: "Deleted!",
+            text: "Produk berhasil dihapus.",
+            icon: "success",
+          });
+        }
+      });
     }
   };
   return (

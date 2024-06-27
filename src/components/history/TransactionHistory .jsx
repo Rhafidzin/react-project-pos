@@ -29,7 +29,7 @@ export default function TransactionHistory() {
   // console.log(dataTransaction);
 
   return (
-    <div className="mx-8 my-16">
+    <div className="mx-8 py-16">
       <h1 className="text-2xl font-bold mb-6">Riwayat Transaksi</h1>
       <TransactionTable dataTransaction={dataTransaction} />
     </div>

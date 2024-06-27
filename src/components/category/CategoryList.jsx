@@ -27,7 +27,7 @@ export default function CategoryList() {
 
   // console.log(dataCategory);
   return (
-    <div className="m-16">
+    <div className="p-16">
       <h1 className="font-bold text-2xl flex justify-between">
         Daftar Kategori{" "}
         <span>
@@ -42,6 +42,7 @@ export default function CategoryList() {
         <CategoryTable
           dataCategory={dataCategory}
           dataRelatedProduct={dataRelatedProduct}
+          mutate={mutate}
         />
       </div>
     </div>

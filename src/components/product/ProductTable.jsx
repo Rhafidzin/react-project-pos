@@ -29,20 +29,21 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { CaretUpDown } from "@phosphor-icons/react";
 
-export default function ProductTable({ dataProduct }) {
+export default function ProductTable({ dataProduct, mutate }) {
   const fetchProduct = (url) =>
     axios
       .get(url)
       .then((response) => response.data.data)
       .catch((e) => console.log(e));
 
-  const { data: dataTransactionDetail, mutate } = useSWR(
+  const { data: dataTransactionDetail } = useSWR(
     `http://localhost:8081/pos/api/listtransaksidetail`,
     fetchProduct
   );
 
   //   console.log(dataProduct);
 
+  //usememo
   const columns = [
     {
       accessorKey: "id",

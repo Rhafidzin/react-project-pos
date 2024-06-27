@@ -6,6 +6,7 @@ import useSWR from "swr";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useParams } from "react-router-dom";
+import Navbar from "@/components/layout/Navbar";
 
 export default function CategoryFormEdit() {
   const { id } = useParams();
@@ -49,6 +50,7 @@ export default function CategoryFormEdit() {
 
   return (
     <div className="flex flex-col justify-center items-center my-32 px-64">
+      <Navbar />
       <h1 className="text-2xl font-bold mb-6 flex justify-between">
         Form Kategori <span></span>
       </h1>

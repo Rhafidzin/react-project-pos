@@ -4,6 +4,7 @@ import axios from "axios";
 import React from "react";
 import { Link, useParams } from "react-router-dom";
 import useSWR from "swr";
+import Navbar from "../layout/Navbar";
 
 export default function CategoryDetail() {
   const { id } = useParams();
@@ -42,6 +43,7 @@ export default function CategoryDetail() {
   //   console.log(related());
   return (
     <div className="m-16">
+      <Navbar />
       <h1 className="font-bold text-2xl flex justify-between">
         Daftar Produk{" "}
         <span>

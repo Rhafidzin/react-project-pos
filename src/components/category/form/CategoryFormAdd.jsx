@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import useSWR from "swr";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import Navbar from "@/components/layout/Navbar";
 
 export default function CategoryFormAdd() {
   const schema = yup.object().shape({
@@ -47,6 +48,7 @@ export default function CategoryFormAdd() {
 
   return (
     <div className="flex flex-col justify-center items-center my-32 px-64">
+      <Navbar />
       <h1 className="text-2xl font-bold mb-6 flex justify-between">
         Form Kategori <span></span>
       </h1>
