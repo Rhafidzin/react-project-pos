@@ -4,21 +4,16 @@ import useSWR from "swr";
 import { Link } from "react-router-dom";
 
 import ProductTable from "./ProductTable";
+import { fetcher } from "@/lib/fetcher";
 
 export default function ProductList() {
-  const fetchProduct = (url) =>
-    axios
-      .get(url)
-      .then((response) => response.data.data)
-      .catch((e) => console.log(e));
-
   const {
     data: dataProduct,
     isLoading,
     mutate,
   } = useSWR(
     `http://localhost:8081/pos/api/listproduct?title=&category_id=`,
-    fetchProduct
+    fetcher
   );
 
   if (isLoading) return <div>Loading</div>;

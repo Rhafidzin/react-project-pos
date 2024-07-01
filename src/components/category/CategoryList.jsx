@@ -3,14 +3,9 @@ import React, { useEffect } from "react";
 import useSWR from "swr";
 import CategoryTable from "./CategoryTable";
 import { Link } from "react-router-dom";
+import { fetcher } from "@/lib/fetcher";
 
 export default function CategoryList() {
-  const fetcher = (url) =>
-    axios
-      .get(url)
-      .then((response) => response.data.data)
-      .catch((e) => console.log(e));
-
   const {
     data: dataCategory,
     isLoading,

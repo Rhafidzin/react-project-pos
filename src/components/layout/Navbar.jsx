@@ -15,9 +15,9 @@ export default function Navbar() {
   return (
     <>
       {isShow ? (
-        <div className="absolute min-h-full bg-sky-800 z-10 w-64">
+        <div className="fixed min-h-full bg-sky-800 z-10 w-64">
           <button
-            className="absolute right-2 top-2 hover:bg-sky-900"
+            className="absolute p-3 hover:bg-sky-900 w-full"
             onClick={() => setIsShow(!isShow)}
           >
             <List size={32} color="#ffffff" />
@@ -57,10 +57,13 @@ export default function Navbar() {
         </div>
       ) : (
         <button
-          className="absolute left-4 top-2 hover:bg-gray-300"
+          className="fixed px-4 py-2 hover:bg-gray-300 bg-gray-100 w-full"
           onClick={() => setIsShow(!isShow)}
         >
-          <List size={32} color="#1c1c1c" />
+          <span className="flex items-center gap-2 text-xl font-medium">
+            <List size={32} color="#1c1c1c" />
+            Menu Bar
+          </span>
         </button>
       )}
     </>

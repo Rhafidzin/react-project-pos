@@ -3,9 +3,10 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { dropCart, fetchCart } from "../../store/reducers/cartSlice";
+import { dropCart } from "../../store/reducers/cartSlice";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import { CashRegister } from "@phosphor-icons/react";
 
 export default function PaymentDetail() {
   const navigate = useNavigate();
@@ -49,7 +50,6 @@ export default function PaymentDetail() {
         });
         navigate("/");
         dispatch(dropCart(transactionsDetail));
-        setTimeout(() => dispatch(fetchCart()), 200);
       })
       .catch((e) => {
         console.log(e);
@@ -64,22 +64,33 @@ export default function PaymentDetail() {
   // console.log(change);
 
   return (
-    <div className="mx-4 pt-16">
-      <div className="grid grid-cols-3 gap-2">
-        <div className="col-span-2 flex flex-col border-r-4 min-h-screen">
-          <h1 className="text-2xl font-bold mb-6">Rincian Pesanan</h1>
-
-          <div className="grid gap-4">
+    <div className="mx-4 pt-16 h-screen">
+      <div className="grid grid-cols-3 gap-2 h-full">
+        <div className="col-span-2 flex flex-col border-r-4 h-full overflow-hidden">
+          <h1 className="text-2xl font-bold mb-6 ">Rincian Pesanan</h1>
+          {dataCart.length < 1 && (
+            <div className="flex justify-center pt-24 flex-col items-center ">
+              <CashRegister size={120} />
+              <p className="font-bold text-2xl">Pesanan kosong</p>
+            </div>
+          )}
+          <div className="flex flex-col gap-4 overflow-y-scroll h-full pb-8">
             {dataCart.map((c) => (
               <div key={c.id} className="flex">
                 <img src={c.image} alt="" className="size-28 object-cover" />
                 <div className="flex grow flex-col text-xl font-medium">
                   <h3 className="flex justify-between grow mx-4">
-                    <span>{c.title}</span>
-                    <span>{c.qty}x</span>
-                    <span>
-                      <FormatRupiah value={c.price * c.qty} />
-                    </span>
+                    <table className="w-full">
+                      <thead>
+                        <tr>
+                          <td className="w-1/2">{c.title}</td>
+                          <td className="w">{c.qty}x</td>
+                          <td className="text-right">
+                            <FormatRupiah value={c.price * c.qty} />
+                          </td>
+                        </tr>
+                      </thead>
+                    </table>
                   </h3>
                   <p className="mx-4 h-14">
                     <FormatRupiah value={c.price} />
@@ -89,7 +100,7 @@ export default function PaymentDetail() {
             ))}
           </div>
         </div>
-        <div>
+        <div className="h-[80%] overflow-y-hidden">
           <h1 className="text-2xl font-bold mb-6 ">Pembayaran</h1>
           <h2 className="flex justify-between font-bold text-lg">
             Total

@@ -1,5 +1,5 @@
 import {configureStore} from "@reduxjs/toolkit"
-import cartSlice, { fetchCart } from "./reducers/cartSlice";
+import cartSlice from "./reducers/cartSlice";
 
 const store = configureStore({
     reducer: {
@@ -7,5 +7,5 @@ const store = configureStore({
     }
 });
 
-store.dispatch(fetchCart());
+// store.dispatch(fetchCart());
 export default store

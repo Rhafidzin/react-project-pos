@@ -4,9 +4,9 @@ import Navbar from "../layout/Navbar";
 
 export default function TransactionDetailPage() {
   return (
-    <div>
+    <>
       <Navbar />
       <TransactionDetail />
-    </div>
+    </>
   );
 }

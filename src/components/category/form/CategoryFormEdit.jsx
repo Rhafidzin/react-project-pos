@@ -49,34 +49,36 @@ export default function CategoryFormEdit() {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center my-32 px-64">
+    <>
       <Navbar />
-      <h1 className="text-2xl font-bold mb-6 flex justify-between">
-        Form Kategori <span></span>
-      </h1>
-      <div className="w-2/3">
-        <form onSubmit={handleSubmit(onClickSubmit)}>
-          <div className="flex flex-col gap-4 w-full">
-            <div>
-              <label className="flex gap-2 font-medium">
-                Nama Kategori
-                <span className="text-red-500">{errors.name?.message}</span>
-              </label>
-              <input
-                type="text"
-                {...register("name")}
-                className="w-full h-12 border-2 border-gray-400 pl-2 text-xl"
-              />
+      <div className="flex flex-col justify-center items-center py-32 px-64">
+        <h1 className="text-2xl font-bold mb-6 flex justify-between">
+          Form Kategori <span></span>
+        </h1>
+        <div className="w-2/3">
+          <form onSubmit={handleSubmit(onClickSubmit)}>
+            <div className="flex flex-col gap-4 w-full">
+              <div>
+                <label className="flex gap-2 font-medium">
+                  Nama Kategori
+                  <span className="text-red-500">{errors.name?.message}</span>
+                </label>
+                <input
+                  type="text"
+                  {...register("name")}
+                  className="w-full h-12 border-2 border-gray-400 pl-2 text-xl"
+                />
+              </div>
             </div>
-          </div>
-          <button
-            type="submit"
-            className="w-36 bg-sky-500 text-white h-10 rounded-md mt-6"
-          >
-            Submit
-          </button>
-        </form>
+            <button
+              type="submit"
+              className="w-36 bg-sky-500 text-white h-10 rounded-md mt-6"
+            >
+              Submit
+            </button>
+          </form>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

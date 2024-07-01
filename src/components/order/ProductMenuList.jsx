@@ -32,7 +32,7 @@ export default function ProductMenuList({ categoryState }) {
 
   // console.log(methods.watch().title);
   return (
-    <div className="w-2/3 px-4 pt-12 pb-24">
+    <div className="w-2/3 px-4 pt-12 pb-28 overflow-y-scroll max-h-screen min-h-screen">
       <div className="text-4xl font-bold mb-8 flex justify-between items-center">
         <h1>Daftar Produk</h1>
         <div className="font-normal flex items-center gap-2 text-xl">

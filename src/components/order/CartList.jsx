@@ -12,7 +12,7 @@ import Swal from "sweetalert2";
 
 import {
   deleteFromCart,
-  fetchCart,
+  dropCart,
   minusQty,
   plusQty,
 } from "../../store/reducers/cartSlice";
@@ -20,6 +20,7 @@ import {
 export default function CartList() {
   const dispatch = useDispatch();
   const { dataCart } = useSelector((state) => state.cart);
+  // console.log("data cart ", dataCart);
   const subTotal = dataCart
     .map((item) => item.price * item.qty)
     .reduce((prevValue, currValue) => prevValue + currValue, 0);
@@ -27,11 +28,9 @@ export default function CartList() {
 
   const onClickMinusQty = (id) => {
     dispatch(minusQty(id));
-    setTimeout(() => dispatch(fetchCart()), 200);
   };
   const onClickPlusQty = (id) => {
     dispatch(plusQty(id));
-    setTimeout(() => dispatch(fetchCart()), 200);
   };
   const onClickDelete = (id) => {
     Swal.fire({
@@ -44,20 +43,37 @@ export default function CartList() {
       confirmButtonText: "Hapus!",
     }).then((result) => {
       if (result.isConfirmed) {
-        // Swal.fire({
-        //   title: "Deleted!",
-        //   text: "Produk dihapus dari keranjang.",
-        //   icon: "success",
-        // });
         dispatch(deleteFromCart(id));
-        setTimeout(() => dispatch(fetchCart()), 200);
       }
     });
   };
 
+  const onClickDeleteAll = () => {
+    Swal.fire({
+      title: "Kosongkan keranjang?",
+      text: "Produk akan terhapus dari keranjang!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Hapus!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(dropCart());
+      }
+    });
+  };
   return (
-    <div className="fixed right-0 bg-gray-200 w-1/3 min-h-screen z-10 top-0">
-      <h1 className="text-2xl mx-4 mt-8 font-bold">Daftar Pesanan</h1>
+    <div className="absolute right-0 bg-gray-200 w-1/3 max-h-screen z-10 top-0 overflow-y-scroll min-h-screen">
+      <h1 className="text-2xl mx-4 mt-8 font-bold flex justify-between">
+        Daftar Pesanan{" "}
+        <button
+          className="w-32 rounded-md font-medim text-lg bg-green-500 text-white"
+          onClick={() => onClickDeleteAll()}
+        >
+          Kosongkan
+        </button>
+      </h1>
       <div className="mt-8 mx-4 grid gap-24">
         {dataCart.length < 1 && (
           <div className="flex justify-center pt-24 pb-12 flex-col items-center">
@@ -125,7 +141,7 @@ export default function CartList() {
             </div>
           </div>
         ))}
-        <div>
+        <div className="pb-8">
           <h3 className="flex justify-between font-bold text-2xl">
             Total{" "}
             <span>

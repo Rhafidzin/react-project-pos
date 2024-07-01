@@ -202,50 +202,48 @@ export default function CategoryTable({
             </TableRow>
           ))}
         </TableBody>
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <button
-                onClick={() => table.previousPage()}
-                disabled={!table.getCanPreviousPage()}
-                className={
-                  !table.getCanPreviousPage() && "hover:cursor-not-allowed"
-                }
-              >
-                <PaginationPrevious />
-              </button>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">
-                <select
-                  className="bg-transparent "
-                  value={table.getState().pagination.pageSize}
-                  onChange={(e) => {
-                    table.setPageSize(Number(e.target.value));
-                  }}
-                >
-                  {[5, 10, 20, 40, 50].map((pageSize) => (
-                    <option key={pageSize} value={pageSize}>
-                      {pageSize}
-                    </option>
-                  ))}
-                </select>
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <button
-                onClick={() => table.nextPage()}
-                disabled={!table.getCanNextPage()}
-                className={
-                  !table.getCanNextPage() && "hover:cursor-not-allowed"
-                }
-              >
-                <PaginationNext />
-              </button>
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
       </Table>
+      <Pagination>
+        <PaginationContent>
+          <PaginationItem>
+            <button
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+              className={
+                !table.getCanPreviousPage() && "hover:cursor-not-allowed"
+              }
+            >
+              <PaginationPrevious />
+            </button>
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink href="#">
+              <select
+                className="bg-transparent "
+                value={table.getState().pagination.pageSize}
+                onChange={(e) => {
+                  table.setPageSize(Number(e.target.value));
+                }}
+              >
+                {[5, 10, 20, 40, 50].map((pageSize) => (
+                  <option key={pageSize} value={pageSize}>
+                    {pageSize}
+                  </option>
+                ))}
+              </select>
+            </PaginationLink>
+          </PaginationItem>
+          <PaginationItem>
+            <button
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+              className={!table.getCanNextPage() && "hover:cursor-not-allowed"}
+            >
+              <PaginationNext />
+            </button>
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
     </>
   );
 }

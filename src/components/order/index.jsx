@@ -31,8 +31,8 @@ export default function OrderProductPage() {
       <div className="fixed bottom-0 w-2/3 bg-orange-400 text-white h-16 flex items-center justify-center ">
         <ul className="flex items-center text-xl">
           <button
-            className={`border-x border-white px-4 hover:cursor-pointer py-5 ${
-              categoryState === "" && `bg-red-700`
+            className={`border-x border-white px-4 hover:cursor-pointer py-5 hover:bg-red-700 ${
+              categoryState === "" && `bg-red-800 active:bg-red-800`
             }`}
             onClick={() => onClickSet("")}
           >
@@ -40,8 +40,8 @@ export default function OrderProductPage() {
           </button>
           {data.map((category) => (
             <button
-              className={`border-x border-white px-4 hover:cursor-pointer py-5 ${
-                categoryState == category.id && `bg-red-700`
+              className={`border-x border-white px-4 hover:cursor-pointer py-5 hover:bg-red-700 ${
+                categoryState == category.id && `bg-red-800 active:bg-red-800`
               }`}
               key={category.id}
               onClick={() => onClickSet(category.id)}
@@ -51,7 +51,7 @@ export default function OrderProductPage() {
           ))}
         </ul>
       </div>
-      <div className="min-h-screen bg-gray-100">
+      <div className=" bg-gray-100 min-h-screen">
         <ProductMenuList categoryState={categoryState} />
         <CartList />
       </div>

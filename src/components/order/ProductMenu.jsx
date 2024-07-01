@@ -3,9 +3,9 @@ import axios from "axios";
 import React from "react";
 import { useDispatch } from "react-redux";
 import useSWR from "swr";
-import { addToCart, fetchCart } from "../../store/reducers/cartSlice";
+import { addToCart } from "../../store/reducers/cartSlice";
 
-export default function ProductMenu({ title, category, sortBy, sortOrder }) {
+export default function ProductMenu({ title, category, sortBy }) {
   const dispatch = useDispatch();
   const fetchProduct = (url) =>
     axios
@@ -19,9 +19,13 @@ export default function ProductMenu({ title, category, sortBy, sortOrder }) {
   );
 
   const onClickSubmit = (data) => {
-    data.qty = 1;
-    dispatch(addToCart(data));
-    setTimeout(() => dispatch(fetchCart()), 200);
+    const qty = 1;
+    const payload = {
+      ...data,
+      qty,
+    };
+    // console.log(payload);
+    dispatch(addToCart(payload));
   };
 
   return (

@@ -35,7 +35,7 @@ export default function TransactionDetail() {
   console.log(filteredData);
   const dataTransaction = filteredData[0].transaction;
   return (
-    <div className="m-16">
+    <div className="p-16">
       <h1 className="font-bold text-2xl flex justify-between">
         Daftar Produk{" "}
         <span>

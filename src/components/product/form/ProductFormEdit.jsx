@@ -8,6 +8,7 @@ import useSWR from "swr";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import Navbar from "@/components/layout/Navbar";
+import { fetcher } from "@/lib/fetcher";
 export default function ProductFormEdit() {
   const { id } = useParams();
   const schema = yup.object().shape({
@@ -27,19 +28,13 @@ export default function ProductFormEdit() {
     resolver: yupResolver(schema),
   });
 
-  const fetchCategory = (url) =>
-    axios
-      .get(url)
-      .then((response) => response.data.data)
-      .catch((e) => console.log(e));
-
   const { data: dataCategory, isLoading: loadingCategory } = useSWR(
     `http://localhost:8081/pos/api/listproduct/category`,
-    fetchCategory
+    fetcher
   );
   const { data: dataProduct, isLoading: loadingProduct } = useSWR(
     `http://localhost:8081/pos/api/detailproduct/${id}`,
-    fetchCategory
+    fetcher
   );
 
   if (loadingCategory) return <div>Loading</div>;
@@ -69,82 +64,84 @@ export default function ProductFormEdit() {
       });
   };
   return (
-    <div className="flex flex-col justify-center items-center my-32 px-64">
+    <>
       <Navbar />
-      <h1 className="text-2xl font-bold mb-6">Form Edit Produk</h1>
-      <div className="w-2/3">
-        <form onSubmit={handleSubmit(onClickSubmit)}>
-          <div className="flex flex-col gap-4 w-full">
-            <div>
-              <label className="flex gap-2 font-medium">
-                Nama Produk
-                <span className="text-red-500">{errors.title?.message}</span>
-              </label>
-              <input
-                type="text"
-                defaultValue={dataProduct.title}
-                {...register("title")}
-                className="w-full h-12 border-2 border-gray-400 pl-2 text-xl"
-              />
-            </div>
-            <div>
-              <label className="flex gap-2 font-medium">
-                Kategori{" "}
-                <span className="text-red-500">
-                  {errors.category?.id.message}
-                </span>
-              </label>
-              <select
-                type="text"
-                {...register("category.id")}
-                className="w-full h-12 border-2 border-gray-400 pl-2 text-xl"
-              >
-                <option value=""></option>
-                {dataCategory.map((c) => (
-                  <option key={c.id} value={c.id}>
-                    {c.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label className="flex gap-2 font-medium">
-                URL Gambar{" "}
-                <span className="text-red-500">{errors.image?.message}</span>
-              </label>
-              <input
-                type="text"
-                defaultValue={dataProduct.image}
-                {...register("image")}
-                className="w-full h-12 border-2 border-gray-400 pl-2 text-xl"
-              />
-            </div>
-            <div>
-              <label className="flex flex-col font-medium">
-                Harga Satuan
-                <span className="text-red-500">{errors.price?.message}</span>
-              </label>
-              <div className="relative">
+      <div className="flex flex-col justify-center items-center py-32 px-64">
+        <h1 className="text-2xl font-bold mb-6">Form Edit Produk</h1>
+        <div className="w-2/3">
+          <form onSubmit={handleSubmit(onClickSubmit)}>
+            <div className="flex flex-col gap-4 w-full">
+              <div>
+                <label className="flex gap-2 font-medium">
+                  Nama Produk
+                  <span className="text-red-500">{errors.title?.message}</span>
+                </label>
                 <input
-                  defaultValue={dataProduct.price}
-                  type="number"
-                  {...register("price")}
-                  className="border-2 border-gray-400 w-full h-12 text-xl font-medium pl-12"
+                  type="text"
+                  defaultValue={dataProduct.title}
+                  {...register("title")}
+                  className="w-full h-12 border-2 border-gray-400 pl-2 text-xl"
                 />
-                <span className="absolute left-2 bottom-3 pr-2 font-bold border-r-2 border-gray-400">
-                  Rp
-                </span>
+              </div>
+              <div>
+                <label className="flex gap-2 font-medium">
+                  Kategori{" "}
+                  <span className="text-red-500">
+                    {errors.category?.id.message}
+                  </span>
+                </label>
+                <select
+                  type="text"
+                  {...register("category.id")}
+                  className="w-full h-12 border-2 border-gray-400 pl-2 text-xl"
+                >
+                  <option value=""></option>
+                  {dataCategory.map((c) => (
+                    <option key={c.id} value={c.id}>
+                      {c.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="flex gap-2 font-medium">
+                  URL Gambar{" "}
+                  <span className="text-red-500">{errors.image?.message}</span>
+                </label>
+                <input
+                  type="text"
+                  defaultValue={dataProduct.image}
+                  {...register("image")}
+                  className="w-full h-12 border-2 border-gray-400 pl-2 text-xl"
+                />
+              </div>
+              <div>
+                <label className="flex flex-col font-medium">
+                  Harga Satuan
+                  <span className="text-red-500">{errors.price?.message}</span>
+                </label>
+                <div className="relative">
+                  <input
+                    defaultValue={dataProduct.price}
+                    type="number"
+                    {...register("price")}
+                    className="border-2 border-gray-400 w-full h-12 text-xl font-medium pl-12"
+                  />
+                  <span className="absolute left-2 bottom-3 pr-2 font-bold border-r-2 border-gray-400">
+                    Rp
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
-          <button
-            type="submit"
-            className="w-36 bg-sky-500 text-white h-10 rounded-md mt-6"
-          >
-            Edit Product
-          </button>
-        </form>
+            <button
+              type="submit"
+              className="w-36 bg-sky-500 text-white h-10 rounded-md mt-6"
+            >
+              Edit Product
+            </button>
+          </form>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
