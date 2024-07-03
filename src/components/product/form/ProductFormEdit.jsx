@@ -24,6 +24,7 @@ export default function ProductFormEdit() {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
   } = useForm({
     resolver: yupResolver(schema),
   });
@@ -63,6 +64,8 @@ export default function ProductFormEdit() {
           });
       });
   };
+
+  console.log(watch());
   return (
     <>
       <Navbar />
@@ -94,6 +97,7 @@ export default function ProductFormEdit() {
                   type="text"
                   {...register("category.id")}
                   className="w-full h-12 border-2 border-gray-400 pl-2 text-xl"
+                  defaultValue={dataProduct.category.id}
                 >
                   <option value=""></option>
                   {dataCategory.map((c) => (

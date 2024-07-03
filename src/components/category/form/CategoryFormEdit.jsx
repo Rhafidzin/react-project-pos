@@ -7,9 +7,15 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useParams } from "react-router-dom";
 import Navbar from "@/components/layout/Navbar";
+import { fetcher } from "@/lib/fetcher";
 
 export default function CategoryFormEdit() {
   const { id } = useParams();
+
+  const { data: dataCategory, isLoading } = useSWR(
+    `http://localhost:8081/pos/api/listproduct/category/${id}`,
+    fetcher
+  );
   const schema = yup.object().shape({
     name: yup.string().required("Isi nama kategori!"),
   });
@@ -48,6 +54,7 @@ export default function CategoryFormEdit() {
       });
   };
 
+  if (isLoading) return <div>Loading</div>;
   return (
     <>
       <Navbar />
@@ -67,6 +74,7 @@ export default function CategoryFormEdit() {
                   type="text"
                   {...register("name")}
                   className="w-full h-12 border-2 border-gray-400 pl-2 text-xl"
+                  defaultValue={dataCategory.name}
                 />
               </div>
             </div>
